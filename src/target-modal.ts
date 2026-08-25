@@ -58,7 +58,7 @@ export class UploadTargetModal extends Modal {
 			return null;
 		}
 		const modal = new FilePickerModal(this.app, files);
-		return modal.open();
+		return modal.openModal();
 	}
 
 	private async pickFolder(): Promise<TFolder | null> {
@@ -67,14 +67,14 @@ export class UploadTargetModal extends Modal {
 		const choices = [root, ...folders];
 		if (choices.length === 0) return null;
 		const modal = new FolderPickerModal(this.app, choices);
-		return modal.open();
+		return modal.openModal();
 	}
 
 	onClose(): void {
 		this.contentEl.empty();
 	}
 
-	open(): Promise<UploadTarget> {
+	openModal(): Promise<UploadTarget> {
 		return new Promise((resolve) => {
 			this.resolve = resolve;
 			super.open();
@@ -142,7 +142,7 @@ class FilePickerModal extends Modal {
 		this.doResolve(null);
 	}
 
-	open(): Promise<TFile | null> {
+	openModal(): Promise<TFile | null> {
 		return new Promise((resolve) => {
 			this.resolve = resolve;
 			super.open();
@@ -203,7 +203,7 @@ class FolderPickerModal extends Modal {
 		this.doResolve(null);
 	}
 
-	open(): Promise<TFolder | null> {
+	openModal(): Promise<TFolder | null> {
 		return new Promise((resolve) => {
 			this.resolve = resolve;
 			super.open();

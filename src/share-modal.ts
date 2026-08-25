@@ -74,7 +74,7 @@ export class ShareOptionsModal extends Modal {
 		this.doResolve(null);
 	}
 
-	open(): Promise<ShareChoice | null> {
+	openModal(): Promise<ShareChoice | null> {
 		return new Promise((resolve) => {
 			this.resolve = resolve;
 			super.open();
@@ -84,5 +84,5 @@ export class ShareOptionsModal extends Modal {
 
 export async function openShareModal(app: App, defaultTtl: string): Promise<ShareChoice | null> {
 	const modal = new ShareOptionsModal(app, defaultTtl);
-	return modal.open();
+	return modal.openModal();
 }

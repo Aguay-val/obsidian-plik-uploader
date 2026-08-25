@@ -160,7 +160,7 @@ export class PlikSidebarView extends ItemView {
 			return;
 		}
 		const modal = new UploadTargetModal(this.app);
-		const target = await modal.open();
+		const target = await modal.openModal();
 		if (!target) return;
 
 		if (target.kind === 'file') {
