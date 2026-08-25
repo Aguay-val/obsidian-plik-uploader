@@ -75,5 +75,8 @@
   "ttl.week": "1 week",
   "ttl.month": "1 month",
   "ttl.never": "Never",
-  "upload.openSettings": "Open Settings → Plik Uploader."
+  "upload.openSettings": "Open Settings → Plik Uploader.",
+  "sidebar.deleteTitle": "Delete upload",
+  "sidebar.cancel": "Cancel",
+  "sidebar.delete": "Delete"
 }

@@ -142,7 +142,7 @@ export default class PlikUploaderPlugin extends Plugin {
 		}
 		new HistoryModal(this.app, this.history, () => {
 			this.history = [];
-			this.saveSettings();
+			void this.saveSettings();
 		}).open();
 	}
 

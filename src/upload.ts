@@ -15,7 +15,8 @@ export const transport: Transport = async (options) => {
 		body: options.body,
 		throw: false,
 	});
-	return { status: res.status, text: res.text, json: () => res.json };
+	const json: unknown = res.json;
+	return { status: res.status, text: res.text, json: () => json };
 };
 
 export function computeExpiresAt(choice: ShareChoice): number | null {
@@ -60,7 +61,7 @@ export async function uploadVaultFile(plugin: PlikUploaderPlugin, file: TFile): 
 		const result = await uploadToPlik(
 			transport,
 			{ serverUrl, token, ttlSeconds: choice.ttlSeconds, oneShot: choice.oneShot || undefined, password: choice.password || undefined },
-			{ name: file.name, data: await plugin.app.vault.readBinary(file) as ArrayBuffer },
+			{ name: file.name, data: await plugin.app.vault.readBinary(file) },
 		);
 		url = result.url;
 		uploadId = result.uploadId;

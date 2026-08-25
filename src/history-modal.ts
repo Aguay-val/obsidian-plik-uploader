@@ -37,7 +37,7 @@ export class HistoryModal extends Modal {
 			const row = contentEl.createDiv({ cls: `setting-item plik-history-row${isExpired ? ' is-expired' : ''}` });
 
 			const info = row.createDiv({ cls: 'plik-history-item-info' });
-			info.createEl('div', { text: entry.name, cls: 'setting-item-name' });
+			info.createDiv({ text: entry.name, cls: 'setting-item-name' });
 
 			const meta = [date];
 			if (isExpired) meta.push(t('modal.history.expired'));
@@ -48,16 +48,18 @@ export class HistoryModal extends Modal {
 			} else {
 				meta.push(t('modal.history.noExpiry'));
 			}
-			info.createEl('div', { text: meta.join(' · '), cls: 'setting-item-description' });
+			info.createDiv({ text: meta.join(' · '), cls: 'setting-item-description' });
 
 			if (!isExpired) {
-				row.addEventListener('click', async () => {
-					try {
-						await navigator.clipboard.writeText(entry.url);
-						new Notice(t('modal.history.copied', { url: entry.url }));
-					} catch {
-						new Notice(entry.url);
-					}
+				row.addEventListener('click', () => {
+					void (async () => {
+						try {
+							await navigator.clipboard.writeText(entry.url);
+							new Notice(t('modal.history.copied', { url: entry.url }));
+						} catch {
+							new Notice(entry.url);
+						}
+					})();
 				});
 			}
 		}

@@ -1,4 +1,4 @@
-import { App, PluginSettingTab, Setting } from 'obsidian';
+import { App, PluginSettingTab, Setting, type SettingDefinitionItem } from 'obsidian';
 import type PlikUploaderPlugin from './main';
 import { TTL_LABELS, type TtlOption } from './ttl';
 import { t, detectLocale, setLocale } from './i18n';
@@ -27,6 +27,17 @@ export class PlikSettingTab extends PluginSettingTab {
 	constructor(app: App, plugin: PlikUploaderPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
+	}
+
+	getSettingDefinitions(): SettingDefinitionItem[] {
+		return [
+			{ name: t('settings.language'), desc: t('settings.languageDesc') },
+			{ name: t('settings.serverUrl'), desc: t('settings.serverUrlDesc') },
+			{ name: t('settings.token'), desc: t('settings.tokenDesc') },
+			{ name: t('settings.retention'), desc: t('settings.retentionDesc') },
+			{ name: t('settings.sidebar'), desc: t('settings.sidebarDesc') },
+			{ name: t('settings.purgeExpired'), desc: t('settings.purgeExpiredDesc') },
+		];
 	}
 
 	display(): void {
@@ -86,7 +97,7 @@ export class PlikSettingTab extends PluginSettingTab {
 					dropdown.addOption(value, TTL_LABELS[value]);
 				}
 				dropdown.setValue(this.plugin.settings.ttl).onChange(async (value) => {
-					this.plugin.settings.ttl = value as TtlOption;
+					this.plugin.settings.ttl = value;
 					await this.plugin.saveSettings();
 				});
 			});
