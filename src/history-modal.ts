@@ -34,11 +34,9 @@ export class HistoryModal extends Modal {
 			const isExpired = entry.expiresAt !== null && entry.expiresAt < now;
 			const date = new Date(entry.uploadedAt).toLocaleDateString(dateLocale(), { day: '2-digit', month: '2-digit', year: '2-digit' });
 
-			const row = contentEl.createDiv({ cls: 'setting-item' });
-			row.style.cursor = isExpired ? 'default' : 'pointer';
-			if (isExpired) row.style.opacity = '0.45';
+			const row = contentEl.createDiv({ cls: `setting-item plik-history-row${isExpired ? ' is-expired' : ''}` });
 
-			const info = row.createDiv();
+			const info = row.createDiv({ cls: 'plik-history-item-info' });
 			info.createEl('div', { text: entry.name, cls: 'setting-item-name' });
 
 			const meta = [date];
@@ -64,9 +62,7 @@ export class HistoryModal extends Modal {
 			}
 		}
 
-		const btnRow = contentEl.createDiv({ cls: 'setting-item' });
-		btnRow.style.justifyContent = 'flex-end';
-		btnRow.style.marginTop = '1em';
+		const btnRow = contentEl.createDiv({ cls: 'setting-item plik-row-flex-end plik-row-margin-top' });
 		btnRow.createEl('button', { text: t('modal.history.clear'), cls: 'mod-warning' }).addEventListener('click', () => {
 			this.onClear();
 			this.close();

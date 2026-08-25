@@ -7,8 +7,9 @@ let currentLocale = 'en';
 
 export function detectLocale(): string {
   try {
-    const raw = (window as any).moment?.locale?.() ?? 'en';
-    const short = raw.split('-')[0];
+    const moment = (window as unknown as { moment?: { locale?: () => string } }).moment;
+    const raw = moment?.locale?.() ?? 'en';
+    const short = raw.split('-')[0] ?? 'en';
     return short in bundles ? short : 'en';
   } catch {
     return 'en';

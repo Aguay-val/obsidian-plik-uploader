@@ -20,8 +20,7 @@ export class UploadTargetModal extends Modal {
 
 		contentEl.createEl('h3', { text: t('modal.target.title') });
 
-		const fileRow = contentEl.createDiv({ cls: 'setting-item' });
-		fileRow.style.cursor = 'pointer';
+		const fileRow = contentEl.createDiv({ cls: 'setting-item plik-clickable-row' });
 		fileRow.createEl('div', { text: t('modal.target.file'), cls: 'setting-item-name' });
 		fileRow.createEl('div', { text: t('modal.target.fileDesc'), cls: 'setting-item-description' });
 		fileRow.addEventListener('click', async () => {
@@ -32,8 +31,7 @@ export class UploadTargetModal extends Modal {
 			}
 		});
 
-		const folderRow = contentEl.createDiv({ cls: 'setting-item' });
-		folderRow.style.cursor = 'pointer';
+		const folderRow = contentEl.createDiv({ cls: 'setting-item plik-clickable-row' });
 		folderRow.createEl('div', { text: t('modal.target.folder'), cls: 'setting-item-name' });
 		folderRow.createEl('div', { text: t('modal.target.folderDesc'), cls: 'setting-item-description' });
 		folderRow.addEventListener('click', async () => {
@@ -44,8 +42,7 @@ export class UploadTargetModal extends Modal {
 			}
 		});
 
-		const cancelRow = contentEl.createDiv({ cls: 'setting-item' });
-		cancelRow.style.justifyContent = 'flex-end';
+		const cancelRow = contentEl.createDiv({ cls: 'setting-item plik-row-flex-end' });
 		cancelRow.createEl('button', { text: t('modal.target.cancel') }).addEventListener('click', () => {
 			this.close();
 		});
@@ -109,10 +106,8 @@ class FilePickerModal extends Modal {
 
 		const search = contentEl.createEl('input', {
 			attr: { type: 'text', placeholder: t('modal.file.search') },
-			cls: 'setting-item',
+			cls: 'setting-item plik-search-input',
 		});
-		search.style.width = '100%';
-		search.style.marginBottom = '0.5em';
 
 		const list = contentEl.createDiv();
 		const render = (filter: string) => {
@@ -122,8 +117,7 @@ class FilePickerModal extends Modal {
 				? this.files.filter((f) => f.path.toLowerCase().includes(lower))
 				: this.files;
 			for (const file of filtered.slice(0, 50)) {
-				const row = list.createDiv({ cls: 'setting-item' });
-				row.style.cursor = 'pointer';
+				const row = list.createDiv({ cls: 'setting-item plik-clickable-row' });
 				row.createEl('div', { text: file.path, cls: 'setting-item-name' });
 				row.addEventListener('click', () => {
 					this.doResolve(file);
@@ -175,10 +169,8 @@ class FolderPickerModal extends Modal {
 
 		const search = contentEl.createEl('input', {
 			attr: { type: 'text', placeholder: t('modal.folder.search') },
-			cls: 'setting-item',
+			cls: 'setting-item plik-search-input',
 		});
-		search.style.width = '100%';
-		search.style.marginBottom = '0.5em';
 
 		const list = contentEl.createDiv();
 		const render = (filter: string) => {
@@ -188,8 +180,7 @@ class FolderPickerModal extends Modal {
 				? this.folders.filter((f) => f.path.toLowerCase().includes(lower))
 				: this.folders;
 			for (const folder of filtered.slice(0, 50)) {
-				const row = list.createDiv({ cls: 'setting-item' });
-				row.style.cursor = 'pointer';
+				const row = list.createDiv({ cls: 'setting-item plik-clickable-row' });
 				const label = folder.path === '/' ? '/' : folder.path;
 				row.createEl('div', { text: `📁 ${label}`, cls: 'setting-item-name' });
 				row.addEventListener('click', () => {

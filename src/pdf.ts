@@ -72,7 +72,7 @@ async function printToPdf(html: string): Promise<Uint8Array> {
 		// @ts-ignore - webview n'est pas dans la d.ts Obsidian
 		const webview: Electron.WebviewTag = document.createElement('webview');
 		webview.nodeintegration = true;
-		webview.style.display = 'none';
+		webview.classList.add('plik-hidden');
 
 		let settled = false;
 		const cleanup = (err?: Error) => {

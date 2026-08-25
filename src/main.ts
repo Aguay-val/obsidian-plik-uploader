@@ -1,4 +1,4 @@
-import { Notice, Plugin, TAbstractFile, TFile, TFolder, type Menu, type WorkspaceLeaf } from 'obsidian';
+import { Notice, Plugin, TAbstractFile, TFile, TFolder, type Menu } from 'obsidian';
 import { detectLocale, setLocale, t } from './i18n';
 import { type HistoryEntry, addEntry, pruneExpired } from './history';
 import { HistoryModal } from './history-modal';
@@ -95,13 +95,13 @@ export default class PlikUploaderPlugin extends Plugin {
 		const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_PLIK);
 		const existing = leaves[0];
 		if (existing) {
-			this.app.workspace.revealLeaf(existing);
+			this.app.workspace.setActiveLeaf(existing);
 			return;
 		}
 		const leaf = this.app.workspace.getLeftLeaf(false);
 		if (!leaf) return;
 		await leaf.setViewState({ type: VIEW_TYPE_PLIK, active: true });
-		this.app.workspace.revealLeaf(leaf);
+		this.app.workspace.setActiveLeaf(leaf);
 	}
 
 	deactivateSidebar(): void {

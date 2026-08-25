@@ -1,4 +1,4 @@
-import { ItemView, Notice, TFile, TFolder, type WorkspaceLeaf } from 'obsidian';
+import { ItemView, Notice, type WorkspaceLeaf } from 'obsidian';
 import { t, getLocale } from './i18n';
 import { deleteUpload } from './plik-client';
 import type PlikUploaderPlugin from './main';
