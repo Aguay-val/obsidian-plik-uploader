@@ -34,18 +34,32 @@ export async function renderMarkdownToPdf(app: App, file: TFile): Promise<Uint8A
 	viewEl.appendChild(el);
 
 	const promises: Promise<void>[] = [];
-	// @ts-ignore - API interne non exposée dans obsidian.d.ts
-	await MarkdownRenderer.postProcess(app, {
-		docId: `plik-${Date.now()}`,
-		sourcePath: file.path,
-		frontmatter: {},
-		promises,
-		addChild: (c: Component) => comp.addChild(c),
-		getSectionInfo: () => null,
-		containerEl: viewEl,
-		el: viewEl,
-		displayMode: true,
-	});
+	interface PostProcessOptions {
+		docId: string;
+		sourcePath: string;
+		frontmatter: Record<string, never>;
+		promises: Promise<void>[];
+		addChild: (c: Component) => void;
+		getSectionInfo: () => null;
+		containerEl: HTMLElement;
+		el: HTMLElement;
+		displayMode: boolean;
+	}
+	type PostProcessFn = (app: App, options: PostProcessOptions) => Promise<void>;
+	const postProcess = (MarkdownRenderer as unknown as { postProcess?: PostProcessFn }).postProcess;
+	if (postProcess) {
+		await postProcess(app, {
+			docId: `plik-${Date.now()}`,
+			sourcePath: file.path,
+			frontmatter: {},
+			promises,
+			addChild: (c: Component) => comp.addChild(c),
+			getSectionInfo: () => null,
+			containerEl: viewEl,
+			el: viewEl,
+			displayMode: true,
+		});
+	}
 	await Promise.all(promises);
 
 	const css = Array.from(document.styleSheets)
@@ -67,10 +81,25 @@ export async function renderMarkdownToPdf(app: App, file: TFile): Promise<Uint8A
 	return pdf;
 }
 
+interface PlikWebview extends HTMLElement {
+	nodeintegration: boolean;
+	src: string;
+	addEventListener(
+		type: 'dom-ready',
+		listener: () => void,
+		options?: boolean | AddEventListenerOptions,
+	): void;
+	addEventListener(
+		type: 'did-fail-load',
+		listener: (event: { errorDescription?: string }) => void,
+		options?: boolean | AddEventListenerOptions,
+	): void;
+	printToPDF(options: { pageSize: string; printBackground: boolean }): Promise<Buffer>;
+}
+
 async function printToPdf(html: string): Promise<Uint8Array> {
 	return new Promise((resolve, reject) => {
-		// @ts-ignore - webview n'est pas dans la d.ts Obsidian
-		const webview: Electron.WebviewTag = document.createElement('webview');
+		const webview = document.body.createEl('webview' as keyof HTMLElementTagNameMap) as unknown as PlikWebview;
 		webview.nodeintegration = true;
 		webview.classList.add('plik-hidden');
 
