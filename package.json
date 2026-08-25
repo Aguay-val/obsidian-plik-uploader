@@ -1,0 +1,31 @@
+{
+	"name": "obsidian-plik-uploader",
+	"version": "1.0.0",
+	"description": "Upload Obsidian notes and files to a self-hosted Plik instance",
+	"main": "main.js",
+	"type": "module",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"test": "vitest run"
+	},
+	"keywords": [
+		"obsidian",
+		"obsidian-plugin",
+		"plik",
+		"file-sharing"
+	],
+	"license": "GPL-3.0",
+	"devDependencies": {
+		"@types/electron": "^1.4.38",
+		"@types/node": "^22.15.17",
+		"esbuild": "0.25.5",
+		"obsidian": "latest",
+		"typescript": "^5.8.3",
+		"vitest": "^3.0.0"
+	},
+	"packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447",
+	"dependencies": {
+		"fflate": "^0.8.3"
+	}
+}
