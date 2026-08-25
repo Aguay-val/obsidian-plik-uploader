@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-plik-uploader",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "Upload Obsidian notes and files to a self-hosted Plik instance",
 	"main": "main.js",
 	"type": "module",

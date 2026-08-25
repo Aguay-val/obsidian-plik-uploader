@@ -81,6 +81,12 @@ export async function renderMarkdownToPdf(app: App, file: TFile): Promise<Uint8A
 	return pdf;
 }
 
+interface PrintResult {
+	buffer: ArrayBuffer;
+	byteOffset: number;
+	byteLength: number;
+}
+
 interface PlikWebview extends HTMLElement {
 	nodeintegration: boolean;
 	src: string;
@@ -94,7 +100,7 @@ interface PlikWebview extends HTMLElement {
 		listener: (event: { errorDescription?: string }) => void,
 		options?: boolean | AddEventListenerOptions,
 	): void;
-	printToPDF(options: { pageSize: string; printBackground: boolean }): Promise<Buffer>;
+	printToPDF(options: { pageSize: string; printBackground: boolean }): Promise<PrintResult>;
 }
 
 async function printToPdf(html: string): Promise<Uint8Array> {
@@ -115,20 +121,22 @@ async function printToPdf(html: string): Promise<Uint8Array> {
 			cleanup(new Error('PDF render timed out'));
 		}, 30000);
 
-		webview.addEventListener('dom-ready', async () => {
-			try {
-				const data: Buffer = await webview.printToPDF({
-					pageSize: 'A4',
-					printBackground: true,
-				});
-				if (settled) return;
-				resolve(new Uint8Array(data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength)));
-			} catch (error) {
-				cleanup(error instanceof Error ? error : new Error(String(error)));
-			} finally {
-				webview.remove();
-				window.clearTimeout(timeout);
-			}
+		webview.addEventListener('dom-ready', () => {
+			void (async () => {
+				try {
+					const data: PrintResult = await webview.printToPDF({
+						pageSize: 'A4',
+						printBackground: true,
+					});
+					if (settled) return;
+					resolve(new Uint8Array(data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength)));
+				} catch (error) {
+					cleanup(error instanceof Error ? error : new Error(String(error)));
+				} finally {
+					webview.remove();
+					window.clearTimeout(timeout);
+				}
+			})();
 		});
 		webview.addEventListener('did-fail-load', (e: { errorDescription?: string }) => {
 			cleanup(new Error(`webview load failed: ${e.errorDescription ?? ''}`));
