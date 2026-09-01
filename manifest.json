@@ -1,7 +1,7 @@
 {
 	"id": "plik-uploader",
 	"name": "Plik Uploader",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"minAppVersion": "1.0.0",
 	"description": "Upload the current note or any vault file to a self-hosted Plik instance and copy the share link.",
 	"author": "Valentin Baraise",
